@@ -1,0 +1,1158 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- =========================================================
+     BHATINDA O&M DASHBOARD
+     Visual upgrade: modern industrial theme, responsive cards,
+     improved navigation, dashboards, tables and form layouts.
+     ========================================================= -->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BHATINDA O&M | Operations Dashboard</title>
+
+<style>
+/* =========================================================
+   FUNCTION: GLOBAL THEME, TYPOGRAPHY AND LAYOUT
+   ========================================================= */
+:root{
+  --navy:#10243a;
+  --navy-light:#193955;
+  --blue:#1769aa;
+  --blue-light:#e9f3ff;
+  --teal:#0e9384;
+  --green:#16805d;
+  --red:#c24141;
+  --amber:#b7791f;
+  --page:#f3f6fa;
+  --surface:#ffffff;
+  --text:#1c2d40;
+  --muted:#68798c;
+  --border:#dce5ef;
+  --shadow:0 8px 26px rgba(16,36,58,.07);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Inter,"Segoe UI",Arial,sans-serif;
+  background:var(--page);
+  color:var(--text);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{
+  outline:3px solid #82b8ef;
+  outline-offset:2px;
+}
+.app-header{
+  min-height:86px;
+  background:linear-gradient(115deg,#10243a,#17466c);
+  color:white;
+  padding:18px 28px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:18px;
+  box-shadow:0 5px 20px #10243a25;
+}
+.brand{display:flex;align-items:center;gap:14px}
+.brand-mark{
+  display:grid;place-items:center;
+  width:48px;height:48px;border-radius:13px;
+  background:#ffffff18;border:1px solid #ffffff30;
+  font-size:24px;
+}
+.brand-title{font-size:22px;font-weight:800;letter-spacing:.7px}
+.brand-subtitle{font-size:12px;color:#c5d9ec;margin-top:5px}
+.header-status{
+  border:1px solid #ffffff32;
+  background:#ffffff10;
+  padding:9px 13px;border-radius:30px;
+  font-size:12px;white-space:nowrap;
+}
+.header-status:before{
+  content:"";display:inline-block;width:8px;height:8px;
+  border-radius:50%;background:#58d7a3;margin-right:8px;
+}
+.app-layout{display:flex;min-height:calc(100vh - 86px)}
+.sidebar{
+  width:252px;flex:0 0 252px;
+  padding:22px 14px;
+  background:var(--navy);
+  color:#d5e1ed;
+}
+.nav-heading{
+  padding:7px 12px 12px;
+  color:#8fa9c0;font-size:10px;
+  text-transform:uppercase;letter-spacing:1.5px;font-weight:800;
+}
+.nav-button{
+  width:100%;display:flex;align-items:center;gap:12px;
+  border:0;border-radius:9px;background:transparent;
+  color:#d5e1ed;text-align:left;padding:12px 13px;
+  margin:3px 0;font-size:13px;transition:.18s;
+}
+.nav-button:hover{background:#ffffff10;color:white}
+.nav-button.active{background:linear-gradient(100deg,#1a70b4,#2788cb);color:white;box-shadow:0 5px 15px #06182b40}
+.nav-icon{width:22px;text-align:center;font-size:17px}
+.sidebar-note{
+  margin:30px 5px 0;padding:14px;
+  border:1px solid #ffffff18;border-radius:10px;
+  font-size:11px;color:#9fb4c8;line-height:1.6;
+}
+.main-content{flex:1;min-width:0;padding:26px}
+.page-top{
+  display:flex;justify-content:space-between;
+  align-items:flex-start;gap:15px;flex-wrap:wrap;
+  margin-bottom:23px;
+}
+.page-title{margin:0;font-size:26px;font-weight:800;letter-spacing:-.5px}
+.page-description{margin:8px 0 0;color:var(--muted);font-size:13px;line-height:1.6}
+.breadcrumb{font-size:12px;color:var(--muted);margin-bottom:12px}
+.breadcrumb button{background:none;border:0;padding:0;color:var(--blue)}
+/* =========================================================
+   FUNCTION: DASHBOARD SUMMARY CARDS AND VISUAL PANELS
+   ========================================================= */
+.stats-grid{
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:16px;margin-bottom:23px;
+}
+.stat-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:19px;box-shadow:var(--shadow);
+  position:relative;overflow:hidden;
+}
+.stat-card:after{
+  content:"";position:absolute;right:-23px;top:-25px;
+  width:85px;height:85px;border-radius:50%;background:var(--blue-light);
+}
+.stat-label{font-size:12px;color:var(--muted);font-weight:700}
+.stat-value{font-size:29px;font-weight:800;margin:12px 0 7px}
+.stat-foot{font-size:11px;color:var(--muted)}
+.stat-icon{
+  width:38px;height:38px;display:grid;place-items:center;
+  border-radius:10px;background:var(--blue-light);
+  color:var(--blue);font-size:18px;margin-bottom:12px;
+}
+.section-heading{
+  display:flex;justify-content:space-between;align-items:center;
+  gap:12px;flex-wrap:wrap;margin:23px 0 14px;
+}
+.section-heading h2{font-size:17px;margin:0}
+.section-heading p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:14px;padding:21px;margin-bottom:18px;
+  box-shadow:var(--shadow);min-width:0;
+}
+.folder-grid{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:16px;
+}
+.folder-card{
+  display:flex;flex-direction:column;align-items:flex-start;
+  gap:12px;padding:20px;text-align:left;
+  background:white;border:1px solid var(--border);
+  border-radius:13px;min-height:155px;
+  transition:transform .18s,border-color .18s,box-shadow .18s;
+}
+.folder-card:hover{
+  transform:translateY(-3px);border-color:#83b7e7;
+  box-shadow:0 10px 24px #12395d12;
+}
+.folder-icon{
+  display:grid;place-items:center;width:45px;height:45px;
+  border-radius:12px;background:var(--blue-light);
+  font-size:22px;
+}
+.folder-name{font-size:14px;font-weight:800;line-height:1.5}
+.folder-description{font-size:11px;color:var(--muted);line-height:1.5}
+.folder-link{font-size:12px;color:var(--blue);font-weight:700;margin-top:auto}
+/* =========================================================
+   FUNCTION: FORM FIELDS AND ACTION BUTTONS
+   ========================================================= */
+.form-grid{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:17px;
+}
+.field{display:flex;flex-direction:column;gap:8px;min-width:0}
+.field label{font-size:12px;font-weight:750;color:#34485d}
+.field input,.field select,.field textarea{
+  width:100%;min-width:0;padding:11px 12px;
+  background:#fbfdff;border:1px solid #d4deea;
+  border-radius:8px;color:var(--text);font-size:13px;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:#5d9bd6;background:white;outline:2px solid #e2efff;
+}
+.field textarea{min-height:88px;resize:vertical}
+.field input[readonly]{background:#edf2f7;color:#607387}
+.form-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:22px}
+.btn{
+  border:1px solid transparent;border-radius:8px;
+  padding:10px 14px;font-size:12px;font-weight:750;
+  transition:filter .15s,transform .15s;
+}
+.btn:hover{filter:brightness(.96);transform:translateY(-1px)}
+.btn-primary{background:var(--blue);color:white}
+.btn-secondary{background:white;color:#34485d;border-color:var(--border)}
+.btn-edit{background:#e7f1ff;color:#145a9b}
+.btn-delete{background:#fff0f0;color:#b42323}
+.btn-email{background:#e7f8ef;color:#16704b}
+.btn-small{padding:7px 9px;font-size:11px;margin:2px}
+.status-message{
+  display:none;margin-bottom:16px;padding:12px 15px;
+  border-radius:9px;background:#e8f8ef;color:#166534;
+  font-size:13px;border:1px solid #b9e8cb;
+}
+.notice{
+  margin:14px 0;padding:13px 15px;border-radius:9px;
+  background:#edf5ff;border:1px solid #d5e8fc;
+  color:#275781;font-size:12px;line-height:1.6;
+}
+/* =========================================================
+   FUNCTION: RECORD TABLES, SEARCH AND STATUS BADGES
+   ========================================================= */
+.table-toolbar{
+  display:flex;justify-content:space-between;
+  gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:14px;
+}
+.search-input{
+  width:min(100%,360px);padding:10px 12px;
+  border:1px solid var(--border);border-radius:8px;
+  background:#fbfdff;font-size:12px;
+}
+.table-wrap{width:100%;overflow:auto;border:1px solid var(--border);border-radius:10px}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:12px;background:white}
+th,td{padding:12px 13px;border-bottom:1px solid #e8edf3;text-align:left;vertical-align:top}
+th{
+  position:sticky;top:0;background:#eef4fa;color:#34485d;
+  font-size:11px;text-transform:uppercase;letter-spacing:.35px;
+  white-space:nowrap;
+}
+tbody tr:hover{background:#f8fbff}
+tbody tr:last-child td{border-bottom:0}
+.empty-message{text-align:center;padding:30px;color:var(--muted)}
+.status-badge{
+  display:inline-block;padding:5px 9px;border-radius:20px;
+  font-size:10px;font-weight:800;white-space:nowrap;
+}
+.status-ok{background:#e2f7eb;color:#147349}
+.status-not-ok{background:#fff0f0;color:#b42323}
+.status-neutral{background:#edf2f7;color:#526578}
+.file-link{display:block;margin:4px 0;color:var(--blue);word-break:break-word}
+.record-count{font-size:12px;color:var(--muted)}
+/* =========================================================
+   FUNCTION: RESPONSIVE MOBILE AND TABLET LAYOUT
+   ========================================================= */
+@media(max-width:1100px){
+  .stats-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .folder-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .app-layout{display:block}
+  .sidebar{width:100%;padding:10px;display:flex;overflow-x:auto;gap:5px}
+  .nav-heading,.sidebar-note{display:none}
+  .nav-button{width:auto;flex:0 0 auto;white-space:nowrap;margin:0;padding:11px}
+  .main-content{padding:17px}
+  .brand-title{font-size:17px}
+  .header-status{display:none}
+}
+@media(max-width:520px){
+  .app-header{padding:15px}
+  .brand-mark{width:40px;height:40px}
+  .brand-subtitle{font-size:10px}
+  .stats-grid,.folder-grid,.form-grid{grid-template-columns:1fr}
+  .page-title{font-size:22px}
+  .panel{padding:14px}
+}
+
+/* =========================================================
+   ACTIVITY: GLOBAL HOME AND BACK NAVIGATION BUTTONS
+   These controls remain visible on every dashboard page.
+   ========================================================= */
+.global-navigation{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+  padding:12px 15px;
+  background:#ffffff;
+  border:1px solid var(--border);
+  border-radius:12px;
+  box-shadow:var(--shadow);
+}
+
+.global-navigation .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-width:110px;
+}
+
+.global-navigation .home-button{
+  background:var(--navy);
+  color:#ffffff;
+}
+
+.global-navigation .back-button{
+  background:var(--blue-light);
+  color:var(--blue);
+  border:1px solid #cfe2f7;
+}
+
+.global-navigation .nav-hint{
+  margin-left:auto;
+  color:var(--muted);
+  font-size:11px;
+}
+
+@media(max-width:520px){
+  .global-navigation{
+    padding:10px;
+  }
+  .global-navigation .btn{
+    flex:1;
+    min-width:0;
+  }
+  .global-navigation .nav-hint{
+    display:none;
+  }
+}
+
+</style>
+</head>
+
+<body>
+<!-- =========================================================
+     ACTIVITY: APPLICATION HEADER AND PRIMARY NAVIGATION
+     ========================================================= -->
+<header class="app-header">
+  <div class="brand">
+    <div class="brand-mark">⚙</div>
+    <div>
+      <div class="brand-title">BHATINDA O&M</div>
+      <div class="brand-subtitle">Operations & Maintenance Management System</div>
+    </div>
+  </div>
+  <div class="header-status">Local Dashboard Workspace</div>
+</header>
+
+<!-- =========================================================
+     ACTIVITY: GLOBAL HOME AND BACK BUTTONS
+     Home returns to Overview.
+     Back returns to the previous dashboard view.
+     This bar stays outside the dynamic content area so that
+     page rendering does not remove the navigation buttons.
+     ========================================================= -->
+<div class="global-navigation" role="navigation"
+     aria-label="Dashboard page navigation">
+  <button type="button"
+          class="btn back-button"
+          onclick="goBackPage()"
+          title="Return to the previous dashboard page">
+    &#8592; Back
+  </button>
+
+  <button type="button"
+          class="btn home-button"
+          onclick="goHomePage()"
+          title="Return directly to the main Overview page">
+    &#8962; Home
+  </button>
+
+  <span class="nav-hint">BHATINDA O&amp;M / Page Navigation</span>
+</div>
+
+<div class="app-layout">
+  <!-- ACTIVITY: MAIN SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="nav-heading">Workspace navigation</div>
+    <div id="navButtons"></div>
+    <div class="sidebar-note">
+      <strong>Instrumentation Management</strong><br>
+      Manage equipment records, calibration schedules, maintenance reports and supporting documents.
+    </div>
+  </aside>
+
+  <!-- ACTIVITY: DYNAMIC MAIN CONTENT AREA -->
+  <main class="main-content" id="content"></main>
+</div>
+
+<script>
+// ============================================================
+// ACTIVITY: DEFINE MAIN DASHBOARD PAGES
+// ============================================================
+const pages={
+  "Overview":[],
+  "Stations":["IP04 Station Deepnagar","SV01 Station, Jadtauli","SV02 Station, Raikot","SV03 Station, Majhuke","SV04 Station, Dayalpur Mirza","RT Bhatinda — BPCL Fazilka / HMEL branches","SV HMEL Station, Gehri Butter"],
+  "Pipeline Integrity":["Pipeline Schematic Route"],
+  "Instrumentation":["Database","Maintenance Reports","Audits — Internal / External","IMS/IQMS Documents","Shop Floor Inventory"],
+  "Electrical":["Database","Maintenance Reports","Audits — Internal / External","Shop Floor Inventory"],
+  "Mechanical":["Database","Maintenance Reports","Audits — Internal / External","Shop Floor Inventory"],
+  "GAILTEL":["Equipment Database","Maintenance Reports","Network / Link Status"],
+  "Fire & Safety":["Database","Maintenance Reports","Audits — Internal / External","Shop Floor Inventory"],
+  "Operations":["Daily Shift Logbook","Daily Metering Logbook of Each Shift"],
+  "Miscellaneous Reports":["General Reports","Document Register","Other Records"]
+};
+
+// ============================================================
+// ACTIVITY: DEFINE ALL INSTRUMENTATION DATABASE ENTRY FORMS
+// Existing database records use their original localStorage keys
+// where previously specified.
+// ============================================================
+const databaseDefinitions=[
+  // DATABASE ENTRY: MASTER INSTRUMENTS
+  {name:"Master Instruments",key:"bhatinda_master_instruments_v1",fields:[
+    ["tagNo","Tag No"],["instrumentName","Instrument Name"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["calibrationFrequency","Frequency of Calibration"],["certificateNumber","Last Calibration Certificate Number"],["lastCalibrationDate","Last Calibration Date","date"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["tagNo","instrumentName","healthinessStatus"]},
+
+  // DATABASE ENTRY: CUSTODY FLOW-METER
+  {name:"Custody Flow-Meter",key:"bhatinda_custody_flow_meter_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["streamNumber","Stream Number"],["meterTagNumber","Meter Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["yearManufacturing","Year of Manufacturing","number"],["yearInstallation","Year of Installation","number"],["sizeClassDN","Size and Class / DN"],["gRating","G-Rating"],["qmin","Qmin","number"],["qmax","Qmax","number"],["qt","Qt","number"],["pmax","Pmax","number"],["impulseFactor","Impulse Factor","number"],["skidCapacity","Skid Capacity (As per PRS)"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["meterTagNumber","healthinessStatus"]},
+
+  // DATABASE ENTRY: FLOW COMPUTERS
+  {name:"Flow Computers",key:"bhatinda_flow_computer_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["streamNumber","Stream Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["firmwareVersion","Firmware Version"],["communicationProtocol","Communication Protocol"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: PRESSURE REDUCTION SYSTEM
+  {name:"Pressure Reduction System",key:"bhatinda_prs_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["streamNumber","Stream Number"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["inletPressure","Inlet Pressure"],["outletPressure","Outlet Pressure"],["temperatureRange","Temperature Range"],["sizeClass","Size & Class"],["flowCoefficient","Flow Coefficient"],["springRangeSet","Spring Range Set"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: CUSTODY INSTRUMENTS
+  {name:"Custody Instruments",key:"bhatinda_custody_instruments_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["streamNumber","Stream Number"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["range","Range"],["calibratedRange","Calibrated Range"],["referenceAccuracy","Reference Accuracy"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: NON-CUSTODY INSTRUMENTS
+  {name:"Non-Custody Instruments",key:"bhatinda_non_custody_instruments_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["streamNumber","Stream Number"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["range","Range"],["calibratedRange","Calibrated Range"],["referenceAccuracy","Reference Accuracy"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: ANALYZERS
+  {name:"Analyzers",key:"bhatinda_analyzer_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: HYDROCARBON DETECTOR
+  {name:"Hydrocarbon Detector",key:"bhatinda_hydrocarbon_detector_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["subLocation","Sub-location"],["controllerMake","Controller Make"],["controllerModel","Controller Model"],["tagNumber","Tag Number"],["hcdMake","HCD Make"],["hcdModel","HCD Model"],["hcdSerialNumber","HCD Serial Number"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]},
+
+  // DATABASE ENTRY: PRESSURE SAFETY VALVES
+  {name:"Pressure Safety Valves",key:"bhatinda_pressure_safety_valve_records_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationConsumer","Location/Consumer"],["subLocation","Sub Location"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["setPressure","Set Pressure"],["temperatureRange","Temperature Range"],["sizeClass","Size & Class"],["flowCoefficient","Flow Coefficient"],["healthinessStatus","Healthiness Status","status"]
+  ],required:["healthinessStatus"]}
+];
+
+// ============================================================
+// ACTIVITY: DEFINE MAINTENANCE REPORT REGISTERS AND FIELDS
+// Each report has an independent localStorage key.
+// ============================================================
+const maintenanceReportDefinitions=[
+  // REPORT ENTRY: MASTER INSTRUMENTS CALIBRATION
+  {name:"Master Instruments Calibration Reports",key:"bhatinda_report_master_calibration_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["instrumentName","Instrument Name"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["calibrationDate","Date of Calibration","date"],["nextCalibrationDate","Next Date of Calibration","date"],["calibrationAgency","Calibration Agency"],["certificateNumber","Calibration Certificate Number"],["attachments","Attach Calibration Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: CUSTODY FLOW-METER CALIBRATION
+  {name:"Custody Flow-Meter Calibration Reports",key:"bhatinda_report_flowmeter_calibration_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationCustomer","Location/Customer"],["streamNumber","Stream Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["calibrationDate","Date of Calibration","date"],["nextCalibrationDate","Next Date of Calibration","date"],["calibrationAgency","Calibration Agency"],["certificateNumber","Calibration Certificate Number"],["attachments","Attach Calibration Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: JOINT CALIBRATION
+  {name:"Joint Calibration Reports",key:"bhatinda_report_joint_calibration_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationCustomer","Location/Customer"],["calibrationDate","Calibration Date","date"],["nextCalibrationDate","Next Calibration Date","date"],["doneBy","Calibration Done by (GAIL Representative)"],["witnessedBy","Calibration Witnessed by (Customer Representative)"],["attachments","Attach Calibration Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: FLOW COMPUTER VALIDATION
+  {name:"FC Validation Reports",key:"bhatinda_report_fc_validation_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationCustomer","Location/Customer"],["stream","Stream"],["validationDate","Validation Date","date"],["nextValidationDate","Next Validation Date","date"],["doneBy","Validation Done by"],["witnessedBy","Validation Witnessed by"],["attachments","Attach Validation Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: FLOW COMPUTER DATA BACKUP
+  {name:"FC Data Backup Reports",key:"bhatinda_report_fc_backup_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["customer","Customer"],["tagNumber","FC Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["downloadDate","Date of Data Download","date"],["dataReviewed","Data Reviewed","yesno"],["reviewerName","Name of Reviewing Person","conditional-reviewer"],["attachments","Attach Backup Data","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: FLOW COMPUTER DATA INTEGRITY CHECK
+  {name:"FC Data Integrity Check Reports",key:"bhatinda_report_fc_integrity_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["customer","Customer"],["tagNumber","FC Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["checkDate","Date of Data Integrity Check","date"],["doneBy","Data Integrity Checking Done by"],["reviewedBy","Data Integrity Reviewed by"],["attachments","Attach Integrity Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: USM DATA BACKUP
+  {name:"USM Data Backup Reports",key:"bhatinda_report_usm_backup_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["customer","Customer"],["tagNumber","USM Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["downloadDate","Date of Data Download","date"],["dataReviewed","Data Reviewed","yesno"],["reviewerName","Name of Reviewing Person","conditional-reviewer"],["attachments","Attach Backup Data","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: USM SOS/VALIDATION
+  {name:"USM SOS/Validation Reports",key:"bhatinda_report_usm_sos_validation_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["locationCustomer","Location/Customer"],["stream","Stream"],["sosValidationDate","SOS/Validation Date","date"],["nextSosValidationDate","Next SOS/Validation Date","date"],["doneBy","SOS/Validation Done by"],["witnessedBy","SOS/Validation Witnessed by"],["attachments","Attach SOS/Validation Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: PSV CALIBRATION
+  {name:"PSV Calibration Reports",key:"bhatinda_report_psv_calibration_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["location","Location"],["subLocation","Sub Location"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["inletSize","Inlet Size"],["outletSize","Outlet Size"],["setPressure","Set Pressure"],["calibrationDate","Calibration Date","date"],["nextCalibrationDate","Next Calibration Date","date"],["certificateNumber","Calibration Certificate Number"],["attachments","Attach Calibration Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: HYDROCARBON DETECTOR CALIBRATION
+  {name:"Hydrocarbon Detector Calibration Reports",key:"bhatinda_report_hcd_calibration_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["location","Location"],["subLocation","Sub Location"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],["calibrationDate","Calibration Date","date"],["nextCalibrationDate","Next Calibration Date","date"],["certificateNumber","Calibration Certificate Number"],["attachments","Attach Calibration Report","file"],["remarks","Remarks","textarea"]
+  ]},
+
+  // REPORT ENTRY: GAS CHROMATOGRAPH MAINTENANCE
+  {name:"GC Maintenance Reports",key:"bhatinda_report_gc_maintenance_v1",fields:[
+    ["region","Region"],["maintenanceBase","Maintenance Base"],["customer","Customer"],["tagNumber","Tag Number"],["make","Make"],["model","Model"],["serialNumber","Serial Number"],
+    ["calibrationDate","Calibration Activity — Date of Calibration","date"],["nextCalibrationDate","Calibration Activity — Next Calibration Date","date"],["calibrationInLimit","Calibration Results are in limit","yesno"],["calibrationPerformedBy","Calibration Performed By"],["calibrationReviewedBy","Calibration Reviewed By"],["calibrationAttachments","Calibration Activity — Attachments","file"],["calibrationRemarks","Calibration Activity — Remarks","textarea"],
+    ["validationDate","Validation Activity — Date of Validation","date"],["nextValidationDate","Validation Activity — Next Validation Date","date"],["validationInLimit","Validation Results are in limit","yesno"],["validationPerformedBy","Validation Performed By"],["validationReviewedBy","Validation Reviewed By"],["validationAttachments","Validation Activity — Attachments","file"],["validationRemarks","Validation Activity — Remarks","textarea"],
+    ["repeatabilityDate","Repeatability Check Activity — Date","date"],["nextRepeatabilityDate","Repeatability Check Activity — Next Date","date"],["repeatabilityInLimit","Repeatability Check Results are in limit","yesno"],["repeatabilityPerformedBy","Repeatability Check Performed By"],["repeatabilityReviewedBy","Repeatability Check Reviewed By"],["repeatabilityAttachments","Repeatability Check Activity — Attachments","file"],["repeatabilityRemarks","Repeatability Check Activity — Remarks","textarea"]
+  ]}
+];
+
+// ============================================================
+// ACTIVITY: HTML ESCAPING AND SAFE TEXT DISPLAY
+// ============================================================
+function escapeHTML(value){
+  return String(value??"").replace(/[&<>"']/g,char=>({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[char]));
+}
+
+// ============================================================
+// ACTIVITY: LOAD RECORDS FROM BROWSER STORAGE
+// ============================================================
+function loadRecords(key){
+  try{
+    const data=JSON.parse(localStorage.getItem(key)||"[]");
+    return Array.isArray(data)?data:[];
+  }catch(error){return []}
+}
+
+// ============================================================
+// ACTIVITY: SAVE RECORDS TO BROWSER STORAGE
+// ============================================================
+function persistRecords(key,records){
+  try{
+    localStorage.setItem(key,JSON.stringify(records));
+    return true;
+  }catch(error){
+    alert("Could not save. Browser storage may be full. Reduce attachment size or remove some files.");
+    return false;
+  }
+}
+
+// ============================================================
+// ACTIVITY: GENERATE THE NEXT ENTRY NUMBER
+// ============================================================
+function nextNumber(records){
+  return records.reduce((max,record)=>Math.max(max,Number(record.entryNumber)||0),0)+1;
+}
+
+// ============================================================
+// ACTIVITY: BUILD DASHBOARD HOME AND DEPARTMENT PAGES
+// ============================================================
+function openPage(name){
+  document.querySelectorAll(".nav-button").forEach(button=>{
+    button.classList.toggle("active",button.dataset.page===name);
+  });
+  const content=document.getElementById("content");
+
+  if(name==="Overview"){
+    const totalDatabase=databaseDefinitions.reduce((sum,d)=>sum+loadRecords(d.key).length,0);
+    const totalReports=maintenanceReportDefinitions.reduce((sum,r)=>sum+loadRecords(r.key).length,0);
+    content.innerHTML=`
+      <div class="page-top">
+        <div><h1 class="page-title">Operations Overview</h1>
+        <p class="page-description">Bh atinda operations and maintenance — a consolidated workspace for equipment and reporting records.</p></div>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="stat-icon">⚙</div><div class="stat-label">Database Categories</div><div class="stat-value">${databaseDefinitions.length}</div><div class="stat-foot">Instrumentation registers</div></div>
+        <div class="stat-card"><div class="stat-icon">▤</div><div class="stat-label">Report Registers</div><div class="stat-value">${maintenanceReportDefinitions.length}</div><div class="stat-foot">Maintenance report types</div></div>
+        <div class="stat-card"><div class="stat-icon">▦</div><div class="stat-label">Equipment Records</div><div class="stat-value">${totalDatabase}</div><div class="stat-foot">Saved in this browser</div></div>
+        <div class="stat-card"><div class="stat-icon">✓</div><div class="stat-label">Report Records</div><div class="stat-value">${totalReports}</div><div class="stat-foot">Saved in this browser</div></div>
+      </div>
+      <div class="section-heading"><div><h2>Quick Access</h2><p>Open the workspace you need.</p></div></div>
+      <div class="folder-grid">
+        <button class="folder-card" onclick="openPage('Instrumentation')"><span class="folder-icon">⚙</span><span class="folder-name">Instrumentation</span><span class="folder-description">Equipment database, calibration reports and maintenance registers.</span><span class="folder-link">Open workspace →</span></button>
+        <button class="folder-card" onclick="openPage('Stations')"><span class="folder-icon">⌖</span><span class="folder-name">Stations</span><span class="folder-description">Browse station and location workspaces.</span><span class="folder-link">View stations →</span></button>
+        <button class="folder-card" onclick="openPage('Operations')"><span class="folder-icon">▤</span><span class="folder-name">Operations</span><span class="folder-description">Shift logbooks and daily metering logs.</span><span class="folder-link">Open operations →</span></button>
+      </div>
+      <div class="notice">Records are stored locally in the browser used to enter them. Export or back up important records regularly.</div>`;
+    return;
+  }
+
+  if(name==="Instrumentation"){
+    content.innerHTML=`
+      <div class="page-top"><div><h1 class="page-title">Instrumentation</h1><p class="page-description">Manage instrumentation assets and maintenance reporting activities.</p></div></div>
+      <div class="folder-grid">
+        <button class="folder-card" onclick="openDatabaseMenu()"><span class="folder-icon">⚙</span><span class="folder-name">Database</span><span class="folder-description">Master instruments, meters, flow computers, analyzers and valves.</span><span class="folder-link">Open database →</span></button>
+        <button class="folder-card" onclick="openMaintenanceReports()"><span class="folder-icon">▤</span><span class="folder-name">Maintenance Reports</span><span class="folder-description">Calibration, validation, backup, integrity and GC maintenance reports.</span><span class="folder-link">Open report registers →</span></button>
+        <button class="folder-card" onclick="showPlaceholder('Audits — Internal / External')"><span class="folder-icon">☷</span><span class="folder-name">Audits — Internal / External</span><span class="folder-description">Audit tracking workspace.</span><span class="folder-link">Open section →</span></button>
+
+<button class="folder-card" onclick="showPlaceholder('IMS/IQMS Documents')"><span class="folder-icon">▦</span><span class="folder-name">IMS/IQMS Documents</span><span class="folder-description">Master Documents Workspace.</span><span class="folder-link">Open Documents →</span></button>
+
+        
+<button class="folder-card" onclick="showPlaceholder('Shop Floor Inventory')"><span class="folder-icon">▦</span><span class="folder-name">Shop Floor Inventory</span><span class="folder-description">Inventory management workspace.</span><span class="folder-link">Open inventory →</span></button>
+      </div>`;
+    return;
+  }
+
+  content.innerHTML=`
+    <div class="page-top"><div><h1 class="page-title">${escapeHTML(name)}</h1><p class="page-description">BHATINDA Operations & Maintenance workspace.</p></div></div>
+    <div class="folder-grid">${(pages[name]||[]).map((item,index)=>`
+      <button class="folder-card" onclick="showPlaceholder('${escapeHTML(item).replace(/'/g,"&#39;")}')">
+        <span class="folder-icon">${["▦","▤","⚙","⌖"][index%4]}</span>
+        <span class="folder-name">${escapeHTML(item)}</span>
+        <span class="folder-link">Open section →</span>
+      </button>`).join("")}</div>`;
+}
+
+// ============================================================
+// ACTIVITY: DISPLAY PLACEHOLDER SECTIONS WITHOUT DELETING FORMS
+// ============================================================
+function showPlaceholder(name){
+  document.getElementById("content").innerHTML=`
+    <div class="page-top"><div><h1 class="page-title">${escapeHTML(name)}</h1><p class="page-description">Workspace section.</p></div></div>
+    <div class="panel"><p>This section can be configured with its own entry form and reporting functions.</p><button class="btn btn-secondary" onclick="openPage('Instrumentation')">Back to Instrumentation</button></div>`;
+}
+
+// ============================================================
+// ACTIVITY: DISPLAY ALL DATABASE FORM CATEGORIES
+// ============================================================
+function openDatabaseMenu(){
+  document.getElementById("content").innerHTML=`
+    <div class="breadcrumb"><button onclick="openPage('Instrumentation')">Instrumentation</button> / Database</div>
+    <div class="page-top"><div><h1 class="page-title">Instrumentation Database</h1><p class="page-description">Select an equipment register to add, search, modify or delete records.</p></div></div>
+    <div class="folder-grid">${databaseDefinitions.map((d,i)=>`
+      <button class="folder-card" onclick="openDatabaseForm(${i})">
+        <span class="folder-icon">⚙</span><span class="folder-name">${escapeHTML(d.name)}</span>
+        <span class="folder-description">Equipment master and status records.</span><span class="folder-link">Open register →</span>
+      </button>`).join("")}</div>`;
+}
+
+// ============================================================
+// ACTIVITY: DATABASE FORM FIELD STATE
+// ============================================================
+let currentDatabase=null,databaseRecords=[],editingDatabaseEntry=null;
+
+// ============================================================
+// ACTIVITY: RENDER A DATABASE ENTRY FORM AND RECORD TABLE
+// ============================================================
+function openDatabaseForm(index,message=""){
+  currentDatabase=databaseDefinitions[index];
+  databaseRecords=loadRecords(currentDatabase.key);
+  editingDatabaseEntry=null;
+  const content=document.getElementById("content");
+
+  content.innerHTML=`
+    <div class="breadcrumb"><button onclick="openPage('Instrumentation')">Instrumentation</button> / <button onclick="openDatabaseMenu()">Database</button> / ${escapeHTML(currentDatabase.name)}</div>
+    <div class="page-top"><div><h1 class="page-title">${escapeHTML(currentDatabase.name)}</h1><p class="page-description">Create and maintain equipment records.</p></div></div>
+    <div id="dbMessage" class="status-message"></div>
+    <div class="panel"><div class="section-heading"><div><h2>Equipment Entry Form</h2><p>Fields marked with * are required.</p></div></div>
+      <form id="dbForm"><div class="form-grid">
+        <div class="field"><label for="db_entryNumber">Entry Number</label><input id="db_entryNumber" value="${nextNumber(databaseRecords)}" readonly></div>
+        ${currentDatabase.fields.map(f=>`
+          <div class="field"><label for="db_${f[0]}">${escapeHTML(f[1])}${currentDatabase.required.includes(f[0])?" *":""}</label>
+          ${f[2]==="status"?`<select id="db_${f[0]}" ${currentDatabase.required.includes(f[0])?"required":""}><option value="">Select status</option><option>OK</option><option>Not OK</option></select>`:
+          `<input id="db_${f[0]}" type="${f[2]||"text"}" ${currentDatabase.required.includes(f[0])?"required":""}>`}</div>`).join("")}
+      </div><div class="form-actions"><button class="btn btn-primary" id="dbSave" type="submit">Save Record</button><button class="btn btn-secondary" type="button" onclick="openDatabaseForm(${index})">Clear Form</button><button class="btn btn-secondary" type="button" onclick="openDatabaseMenu()">Back to Database</button></div></form>
+    </div>
+    <div class="panel"><div class="section-heading"><div><h2>Saved Equipment Records</h2><p>Search and manage saved entries.</p></div><span class="record-count" id="dbCount"></span></div>
+      <div class="table-toolbar"><input class="search-input" id="dbSearch" placeholder="Search equipment records..."></div>
+      <div class="table-wrap"><table><thead><tr><th>Entry No.</th>${currentDatabase.fields.map(f=>`<th>${escapeHTML(f[1])}</th>`).join("")}<th>Actions</th></tr></thead><tbody id="dbRows"></tbody></table></div>
+    </div>`;
+
+  document.getElementById("dbForm").addEventListener("submit",saveDatabaseRecord);
+  document.getElementById("dbSearch").addEventListener("input",renderDatabaseRecords);
+  renderDatabaseRecords();
+  if(message){const box=document.getElementById("dbMessage");box.textContent=message;box.style.display="block";}
+}
+
+// ============================================================
+// ACTIVITY: SAVE OR MODIFY A DATABASE RECORD
+// ============================================================
+function saveDatabaseRecord(event){
+  event.preventDefault();
+  const definition=currentDatabase;
+  const record={entryNumber:editingDatabaseEntry??nextNumber(databaseRecords)};
+  for(const field of definition.fields){
+    record[field[0]]=document.getElementById("db_"+field[0]).value.trim();
+  }
+  for(const requiredKey of definition.required){
+    if(!record[requiredKey]){
+      alert("Please complete "+definition.fields.find(f=>f[0]===requiredKey)[1]);
+      return;
+    }
+  }
+  const previous=databaseRecords.map(r=>({...r}));
+  const wasEditing=editingDatabaseEntry!==null;
+  if(wasEditing){
+    const index=databaseRecords.findIndex(r=>Number(r.entryNumber)===Number(editingDatabaseEntry));
+    if(index<0)return;
+    databaseRecords[index]=record;
+  }else databaseRecords.push(record);
+
+  if(!persistRecords(definition.key,databaseRecords)){databaseRecords=previous;return;}
+  openDatabaseForm(databaseDefinitions.indexOf(definition),wasEditing?"Record modified successfully.":"Record saved successfully.");
+}
+
+// ============================================================
+// ACTIVITY: SEARCH AND RENDER DATABASE RECORDS
+// ============================================================
+function renderDatabaseRecords(){
+  const body=document.getElementById("dbRows");
+  if(!body)return;
+  const query=(document.getElementById("dbSearch").value||"").toLowerCase();
+  const filtered=databaseRecords.filter(record=>Object.values(record).some(value=>String(value??"").toLowerCase().includes(query)));
+  document.getElementById("dbCount").textContent=filtered.length+" record(s)";
+  if(!filtered.length){
+    body.innerHTML=`<tr><td colspan="${currentDatabase.fields.length+2}" class="empty-message">No matching records found.</td></tr>`;
+    return;
+  }
+  body.innerHTML=filtered.map(record=>`
+    <tr><td>${escapeHTML(record.entryNumber)}</td>
+    ${currentDatabase.fields.map(field=>{
+      const value=record[field[0]]||"";
+      if(field[2]==="status"&&value){
+        return `<td><span class="status-badge ${value==="OK"?"status-ok":"status-not-ok"}">${escapeHTML(value)}</span></td>`;
+      }
+      return `<td>${escapeHTML(value)}</td>`;
+    }).join("")}
+    <td><button class="btn btn-edit btn-small" onclick="editDatabaseRecord(${Number(record.entryNumber)})">Edit</button><button class="btn btn-delete btn-small" onclick="deleteDatabaseRecord(${Number(record.entryNumber)})">Delete</button></td></tr>`).join("");
+}
+
+// ============================================================
+// ACTIVITY: LOAD A DATABASE RECORD INTO THE EDIT FORM
+// ============================================================
+function editDatabaseRecord(entryNumber){
+  const record=databaseRecords.find(r=>Number(r.entryNumber)===Number(entryNumber));
+  if(!record)return;
+  editingDatabaseEntry=entryNumber;
+  document.getElementById("db_entryNumber").value=record.entryNumber;
+  for(const field of currentDatabase.fields){
+    document.getElementById("db_"+field[0]).value=record[field[0]]??"";
+  }
+  document.getElementById("dbSave").textContent="Modify Record";
+  document.getElementById("dbForm").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+// ============================================================
+// ACTIVITY: DELETE A DATABASE RECORD AFTER CONFIRMATION
+// ============================================================
+function deleteDatabaseRecord(entryNumber){
+  if(!confirm("Delete database entry "+entryNumber+"?"))return;
+  const old=databaseRecords.slice();
+  databaseRecords=databaseRecords.filter(r=>Number(r.entryNumber)!==Number(entryNumber));
+  if(persistRecords(currentDatabase.key,databaseRecords)){
+    openDatabaseForm(databaseDefinitions.indexOf(currentDatabase),"Record deleted successfully.");
+  }else databaseRecords=old;
+}
+
+// ============================================================
+// ACTIVITY: DISPLAY ALL MAINTENANCE REPORT REGISTERS
+// ============================================================
+function openMaintenanceReports(){
+  document.getElementById("content").innerHTML=`
+    <div class="breadcrumb"><button onclick="openPage('Instrumentation')">Instrumentation</button> / Maintenance Reports</div>
+    <div class="page-top"><div><h1 class="page-title">Maintenance Reports</h1><p class="page-description">Calibration, validation, backup, integrity and maintenance activity records.</p></div></div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-icon">▤</div><div class="stat-label">Report Registers</div><div class="stat-value">${maintenanceReportDefinitions.length}</div><div class="stat-foot">Available forms</div></div>
+      <div class="stat-card"><div class="stat-icon">📎</div><div class="stat-label">Saved Report Entries</div><div class="stat-value">${maintenanceReportDefinitions.reduce((sum,r)=>sum+loadRecords(r.key).length,0)}</div><div class="stat-foot">Across all registers</div></div>
+    </div>
+    <div class="folder-grid">${maintenanceReportDefinitions.map((report,index)=>`
+      <button class="folder-card" onclick="openReportForm(${index})">
+        <span class="folder-icon">▤</span><span class="folder-name">${escapeHTML(report.name)}</span>
+        <span class="folder-description">${loadRecords(report.key).length} saved record(s)</span>
+        <span class="folder-link">Open report register →</span>
+      </button>`).join("")}</div>
+    <div class="notice">Attachments are stored with records in this browser. Email opens a draft with record details; attach files manually before sending.</div>`;
+}
+
+// ============================================================
+// ACTIVITY: MAINTENANCE REPORT FORM STATE
+// ============================================================
+let currentReport=null,reportRecords=[],editingReportEntry=null;
+
+// ============================================================
+// ACTIVITY: BUILD MAINTENANCE REPORT FORM AND TABLE
+// ============================================================
+function openReportForm(index,message=""){
+  currentReport=maintenanceReportDefinitions[index];
+  reportRecords=loadRecords(currentReport.key);
+  editingReportEntry=null;
+
+  document.getElementById("content").innerHTML=`
+    <div class="breadcrumb"><button onclick="openPage('Instrumentation')">Instrumentation</button> / <button onclick="openMaintenanceReports()">Maintenance Reports</button> / ${escapeHTML(currentReport.name)}</div>
+    <div class="page-top"><div><h1 class="page-title">${escapeHTML(currentReport.name)}</h1><p class="page-description">Record, attach and manage maintenance documentation.</p></div></div>
+    <div id="reportMessage" class="status-message"></div>
+    <div class="panel"><div class="section-heading"><div><h2>Report Entry Form</h2><p>Enter the report details and attach supporting documents.</p></div></div>
+      <form id="reportForm"><div class="form-grid">
+        <div class="field"><label for="r_entryNumber">Entry Number</label><input id="r_entryNumber" value="${nextNumber(reportRecords)}" readonly></div>
+        ${currentReport.fields.map(field=>`
+          <div class="field" id="wrap_${field[0]}"><label for="r_${field[0]}">${escapeHTML(field[1])}</label>${reportFieldHTML(field)}</div>`).join("")}
+      </div>
+      <div class="form-actions"><button class="btn btn-primary" id="rSave" type="submit">Save Report</button><button class="btn btn-secondary" type="button" onclick="openReportForm(${index})">Clear Form</button><button class="btn btn-secondary" type="button" onclick="openMaintenanceReports()">Back to Reports</button></div></form>
+    </div>
+    <div class="panel"><div class="section-heading"><div><h2>Saved Report Records</h2><p>Search, modify, delete or email report details.</p></div><span class="record-count" id="rCount"></span></div>
+      <div class="table-toolbar"><input class="search-input" id="rSearch" placeholder="Search report records..."></div>
+      <div class="table-wrap"><table><thead><tr><th>Entry No.</th>${currentReport.fields.filter(f=>f[2]!=="file").map(f=>`<th>${escapeHTML(f[1])}</th>`).join("")}<th>Attachments</th><th>Actions</th></tr></thead><tbody id="rRows"></tbody></table></div>
+    </div>`;
+
+  document.getElementById("reportForm").addEventListener("submit",saveReportRecord);
+  document.getElementById("rSearch").addEventListener("input",renderReportRecords);
+  const reviewed=document.getElementById("r_dataReviewed");
+  if(reviewed)reviewed.addEventListener("change",toggleReviewer);
+  toggleReviewer();
+  renderReportRecords();
+
+  if(message){const box=document.getElementById("reportMessage");box.textContent=message;box.style.display="block";}
+}
+
+// ============================================================
+// ACTIVITY: CREATE THE CORRECT INPUT CONTROL FOR EACH REPORT FIELD
+// ============================================================
+function reportFieldHTML(field){
+  const id="r_"+field[0];
+  const type=field[2]||"text";
+  if(type==="file")return `<input id="${id}" type="file" multiple>`;
+  if(type==="textarea")return `<textarea id="${id}" rows="3"></textarea>`;
+  if(type==="yesno")return `<select id="${id}"><option value="">Select</option><option>Yes</option><option>No</option></select>`;
+  if(type==="conditional-reviewer")return `<input id="${id}" type="text" placeholder="Enter reviewing person's name">`;
+  return `<input id="${id}" type="${type}">`;
+}
+
+// ============================================================
+// ACTIVITY: SHOW REVIEWER NAME ONLY WHEN DATA REVIEWED IS YES
+// ============================================================
+function toggleReviewer(){
+  const input=document.getElementById("r_reviewerName");
+  if(!input)return;
+  const wrapper=input.closest(".field");
+  const show=document.getElementById("r_dataReviewed")?.value==="Yes";
+  wrapper.style.display=show?"flex":"none";
+  if(!show)input.value="";
+}
+
+// ============================================================
+// ACTIVITY: READ SELECTED ATTACHMENTS AND SAVE REPORT ENTRY
+// ============================================================
+
+/* ============================================================
+   ACTIVITY: READ ATTACHMENT FILE
+   PURPOSE:
+   1. Convert an uploaded file into a Data URL.
+   2. Return the file name, type and data for report storage.
+   3. Report file-reading failures to the calling function.
+   ============================================================ */
+function readFileData(file) {
+  return new Promise((resolve, reject) => {
+    if (!file || typeof file.size !== "number") {
+      reject(new Error("Invalid attachment."));
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (typeof reader.result !== "string") {
+        reject(new Error("No readable file data was returned."));
+        return;
+      }
+
+      resolve({
+        name: file.name,
+        type: file.type || "application/octet-stream",
+        data: reader.result
+      });
+    };
+
+    reader.onerror = () => {
+      reject(new Error("The browser could not read the selected file."));
+    };
+
+    reader.onabort = () => {
+      reject(new Error("File reading was cancelled."));
+    };
+
+    try {
+      reader.readAsDataURL(file);
+    } catch (error) {
+      reject(error);
+    }
+  });
+}
+
+async function saveReportRecord(event){
+  event.preventDefault();
+  const oldRecord=editingReportEntry!==null?reportRecords.find(r=>Number(r.entryNumber)===Number(editingReportEntry)):null;
+  const record={entryNumber:editingReportEntry??nextNumber(reportRecords)};
+
+  try{
+    for(const field of currentReport.fields){
+      const element=document.getElementById("r_"+field[0]);
+      if(field[2]==="file"){
+        const previousFiles=(oldRecord?.[field[0]]||[]).slice();
+        const selected=Array.from(element.files||[]);
+        for(const file of selected){
+          if(file.size>25*1024*1024){
+            alert("Each attachment must be 25 MB or smaller. Compress larger files before attaching.");
+            return;
+          }
+          previousFiles.push(await readFileData(file));
+        }
+        record[field[0]]=previousFiles;
+      }else{
+        record[field[0]]=element.value.trim();
+      }
+    }
+  }catch(error){
+    alert("The selected attachment could not be read.");
+    return;
+  }
+
+  if(record.dataReviewed==="No")record.reviewerName="";
+  const previous=reportRecords.map(r=>({...r}));
+  const wasEditing=editingReportEntry!==null;
+
+  if(wasEditing){
+    const index=reportRecords.findIndex(r=>Number(r.entryNumber)===Number(editingReportEntry));
+    if(index<0)return;
+    reportRecords[index]=record;
+  }else reportRecords.push(record);
+
+  if(!persistRecords(currentReport.key,reportRecords)){
+    reportRecords=previous;
+    return;
+  }
+  openReportForm(maintenanceReportDefinitions.indexOf(currentReport),wasEditing?"Report modified successfully.":"Report saved successfully.");
+}
+
+// ============================================================
+// ACTIVITY: SEARCH AND RENDER MAINTENANCE REPORT RECORDS
+// ============================================================
+function renderReportRecords(){
+  const body=document.getElementById("rRows");
+  if(!body)return;
+  const query=(document.getElementById("rSearch").value||"").toLowerCase();
+  const visible=reportRecords.filter(record=>{
+    const matchesText=Object.entries(record).some(([key,value])=>{
+      if(key==="attachments"||Array.isArray(value))return false;
+      return String(value??"").toLowerCase().includes(query);
+    });
+    const matchesFile=currentReport.fields.filter(f=>f[2]==="file").some(field=>(record[field[0]]||[]).some(file=>file.name.toLowerCase().includes(query)));
+    return matchesText||matchesFile;
+  });
+  document.getElementById("rCount").textContent=visible.length+" record(s)";
+
+  if(!visible.length){
+    body.innerHTML=`<tr><td colspan="${currentReport.fields.filter(f=>f[2]!=="file").length+3}" class="empty-message">No matching report records found.</td></tr>`;
+    return;
+  }
+
+  body.innerHTML=visible.map(record=>`
+    <tr><td>${escapeHTML(record.entryNumber)}</td>
+    ${currentReport.fields.filter(f=>f[2]!=="file").map(field=>`<td>${escapeHTML(record[field[0]]||"")}</td>`).join("")}
+    <td>${currentReport.fields.filter(f=>f[2]==="file").flatMap(field=>(record[field[0]]||[]).map(file=>`<a class="file-link" href="${file.data}" download="${escapeHTML(file.name)}">${escapeHTML(file.name)}</a>`)).join("")||"—"}</td>
+    <td><button class="btn btn-edit btn-small" onclick="editReportRecord(${Number(record.entryNumber)})">Edit</button>
+    <button class="btn btn-email btn-small" onclick="emailReportRecord(${Number(record.entryNumber)})">${currentReport.name.includes("Backup")?"Email Backup Data":currentReport.name.includes("Integrity")?"Email Integrity Report":"Email Report"}</button>
+    <button class="btn btn-delete btn-small" onclick="deleteReportRecord(${Number(record.entryNumber)})">Delete</button></td></tr>`).join("");
+}
+
+// ============================================================
+// ACTIVITY: LOAD AN EXISTING REPORT INTO THE EDIT FORM
+// ============================================================
+function editReportRecord(entryNumber){
+  const record=reportRecords.find(r=>Number(r.entryNumber)===Number(entryNumber));
+  if(!record)return;
+  editingReportEntry=entryNumber;
+  document.getElementById("r_entryNumber").value=record.entryNumber;
+
+  for(const field of currentReport.fields){
+    if(field[2]==="file")continue;
+    const element=document.getElementById("r_"+field[0]);
+    if(element)element.value=record[field[0]]??"";
+  }
+
+  document.getElementById("rSave").textContent="Modify Report";
+  toggleReviewer();
+  document.getElementById("reportForm").scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+// ============================================================
+// ACTIVITY: DELETE A MAINTENANCE REPORT ENTRY
+// ============================================================
+function deleteReportRecord(entryNumber){
+  if(!confirm("Delete "+currentReport.name+" entry "+entryNumber+"?"))return;
+  const previous=reportRecords.slice();
+  reportRecords=reportRecords.filter(r=>Number(r.entryNumber)!==Number(entryNumber));
+  if(persistRecords(currentReport.key,reportRecords)){
+    openReportForm(maintenanceReportDefinitions.indexOf(currentReport),"Report record deleted successfully.");
+  }else reportRecords=previous;
+}
+
+// ============================================================
+// ACTIVITY: PREPARE EMAIL DRAFT FOR A REPORT ENTRY
+// ============================================================
+function emailReportRecord(entryNumber){
+  const record=reportRecords.find(r=>Number(r.entryNumber)===Number(entryNumber));
+  if(!record)return;
+  const lines=[currentReport.name,"Entry Number: "+record.entryNumber];
+
+  currentReport.fields.forEach(field=>{
+    const value=field[2]==="file"
+      ?(record[field[0]]||[]).map(file=>file.name).join(", ")
+      :(record[field[0]]||"");
+    lines.push(field[1]+": "+value);
+  });
+
+  lines.push("");
+  lines.push("Please attach the listed report files manually before sending.");
+  const subject=encodeURIComponent(currentReport.name+" — Entry "+record.entryNumber);
+  const body=encodeURIComponent(lines.join("\n"));
+  window.location.href="mailto:?subject="+subject+"&body="+body;
+}
+
+// ============================================================
+// ACTIVITY: INITIALIZE SIDEBAR NAVIGATION AND HOME PAGE
+// ============================================================
+const navigationIcons={
+  "Overview":"⌂","Stations":"⌖","Pipeline Integrity":"⌁",
+  "Instrumentation":"⚙","Electrical":"ϟ","Mechanical":"⚒",
+  "GAILTEL":"⌁","Fire & Safety":"♧","Operations":"▤",
+  "Miscellaneous Reports":"▦"
+};
+
+Object.keys(pages).forEach(name=>{
+  const button=document.createElement("button");
+  button.className="nav-button";
+  button.dataset.page=name;
+  button.innerHTML=`<span class="nav-icon">${navigationIcons[name]||"•"}</span><span>${escapeHTML(name)}</span>`;
+  button.addEventListener("click",()=>openPage(name));
+  document.getElementById("navButtons").appendChild(button);
+});
+
+// ACTIVITY: LOAD THE INITIAL DASHBOARD SCREEN
+openPage("Overview");
+
+/* ============================================================
+   ACTIVITY: GLOBAL PAGE HISTORY, HOME AND BACK NAVIGATION
+   PURPOSE:
+   1. Home always opens the main Overview dashboard.
+   2. Back returns to the previously visited dashboard view.
+   3. Existing database keys, forms and records remain unchanged.
+   4. Navigation history is maintained only in memory.
+   ============================================================ */
+
+const dashboardNavigationHistory = [];
+let currentDashboardView = null;
+let isRestoringDashboardView = false;
+
+/* ACTIVITY: REGISTER A DASHBOARD VIEW */
+function registerDashboardView(viewName, renderFunction, args) {
+  if (isRestoringDashboardView) {
+    currentDashboardView = {
+      name: viewName,
+      render: renderFunction,
+      args: args
+    };
+    return;
+  }
+
+  if (currentDashboardView) {
+    dashboardNavigationHistory.push(currentDashboardView);
+
+    // Keep navigation history at a reasonable size.
+    if (dashboardNavigationHistory.length > 100) {
+      dashboardNavigationHistory.shift();
+    }
+  }
+
+  currentDashboardView = {
+    name: viewName,
+    render: renderFunction,
+    args: args
+  };
+}
+
+/* ACTIVITY: TRACK PAGE NAVIGATION WITHOUT CHANGING FORM DATA */
+function trackDashboardNavigation(functionName) {
+  const originalFunction = window[functionName];
+
+  if (typeof originalFunction !== "function") return;
+
+  window[functionName] = function (...args) {
+    registerDashboardView(
+      functionName,
+      originalFunction,
+      args
+    );
+
+    return originalFunction.apply(this, args);
+  };
+}
+
+/* ACTIVITY: TRACK MAIN AND INSTRUMENTATION NAVIGATION */
+[
+  "openPage",
+  "openDatabaseMenu",
+  "openDatabaseForm",
+  "openMaintenanceReports",
+  "openReportForm",
+  "showPlaceholder"
+].forEach(trackDashboardNavigation);
+
+/* ACTIVITY: SET OVERVIEW AS THE INITIAL NAVIGATION HISTORY VIEW */
+currentDashboardView = {
+  name: "openPage",
+  render: window.openPage,
+  args: ["Overview"]
+};
+
+
+/* ACTIVITY: RETURN DIRECTLY TO THE HOME / OVERVIEW PAGE */
+function goHomePage() {
+  dashboardNavigationHistory.length = 0;
+  currentDashboardView = null;
+  isRestoringDashboardView = false;
+
+  // Call the original renderer directly to avoid recording
+  // Home as a new history entry.
+  const overviewRenderer = window.openPage;
+  if (typeof overviewRenderer === "function") {
+    overviewRenderer("Overview");
+  }
+}
+
+/* ACTIVITY: RETURN TO THE PREVIOUS DASHBOARD PAGE */
+function goBackPage() {
+  if (dashboardNavigationHistory.length === 0) {
+    // If there is no previous page, return to Overview.
+    goHomePage();
+    return;
+  }
+
+  const previousView = dashboardNavigationHistory.pop();
+
+  if (!previousView || typeof previousView.render !== "function") {
+    goHomePage();
+    return;
+  }
+
+  isRestoringDashboardView = true;
+
+  try {
+    currentDashboardView = previousView;
+    previousView.render.apply(null, previousView.args || []);
+  } finally {
+    isRestoringDashboardView = false;
+  }
+}
+
+</script>
+</body>
+</html>
